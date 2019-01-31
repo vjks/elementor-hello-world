@@ -25,7 +25,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'hello-world';
+		return 'WC-Product-Creator';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return __( 'Hello World', 'elementor-hello-world' );
+		return __( 'WC Product Creator', 'elementor-hello-world' );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Hello_World extends Widget_Base {
 		$this->start_controls_section(
 			'section_content',
 			[
-				'label' => __( 'Content', 'elementor-hello-world' ),
+				'label' => __( 'Content', 'elementor-hello-world' ), // Changed Content to Inputs
 			]
 		);
 
@@ -109,6 +109,33 @@ class Hello_World extends Widget_Base {
 			[
 				'label' => __( 'Title', 'elementor-hello-world' ),
 				'type' => Controls_Manager::TEXT,
+			]
+		);
+
+		$this->add_control(
+			'productname',
+			[
+				'label' => __( 'Product Name', 'elementor-hello-world' ),
+				'type' => Controls_Manager::TEXT,
+			]
+		);
+
+		$this->add_control(
+			'productprice',
+			[
+				'label' => __( 'Product Price', 'elementor-hello-world' ),
+				'type' => Controls_Manager::TEXT,
+			]
+		);
+
+		$this->add_control(
+			'submitbutton',
+			[
+				'label' => __( 'Submit', 'elementor-hello-world' ),
+				'type' => Controls_Manager::BUTTON,
+				'text' => __( 'Submit', 'plugin-domain' ),
+				'event' => 'namespace:editor:delete',
+				'separator' => 'before', 
 			]
 		);
 
@@ -137,6 +164,7 @@ class Hello_World extends Widget_Base {
 				'selectors' => [
 					'{{WRAPPER}} .title' => 'text-transform: {{VALUE}};',
 				],
+
 			]
 		);
 
@@ -154,10 +182,17 @@ class Hello_World extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-
-		echo '<div class="title">';
-		echo $settings['title'];
+		echo '<div class="productname">';
+		echo $settings['productname'];
 		echo '</div>';
+		echo '<div class="productprice">';
+		echo $settings['productprice'];
+		echo '</div>';
+		echo 	'<form action="" method="post">';
+		echo 		'<input type="submit" name="submit" onclick="this.style.display=\'none\';" >';
+		echo		'<input type="text" name="productname" value="' . $settings['productname'] . '" hidden><br>';
+		echo		'<input type="number" min="1" step="any" name="productprice" value="' . $settings['productprice'] . '" hidden><br>';
+		echo 	'</form>'; 
 	}
 
 	/**
@@ -173,6 +208,15 @@ class Hello_World extends Widget_Base {
 		?>
 		<div class="title">
 			{{{ settings.title }}}
+		</div>
+		<div class="productname">
+			{{{ settings.productname }}}
+		</div>
+		<div class="productprice">
+			{{{ settings.productprice }}}
+		</div>
+		<div class="submitbutton">
+			{{{ settings.submitbutton }}}
 		</div>
 		<?php
 	}
